@@ -1,0 +1,44 @@
+body {
+  font-family: "Press Start 2P", cursive;
+  margin: 0;
+  padding: 0;
+  background-color: #a3a4a5;
+}
+
+header {
+  background-color: rgb(243, 75, 75);
+  padding: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  margin: 0;
+}
+
+.mail {
+  margin: 0;
+}
+
+.mail a {
+  text-decoration: none;
+}
+
+.hidden {
+  display: none;
+}
+
+main {
+  height: auto;
+  display: grid;
+  grid-template-columns: 50vw 50vw;
+}
+
+main section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
