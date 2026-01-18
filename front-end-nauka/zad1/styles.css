@@ -42,3 +42,33 @@ main section {
   align-items: center;
   margin: 0 auto;
 }
+
+#pokemon-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.pokemon-item {
+  background-color: #f2f2f2; /* Jasnoszare tło karty */
+  border: 4px solid #dcdcdc; /* Styl "retro" ramki */
+  border-radius: 10px; /* Lekko zaokrąglone rogi */
+  padding: 20px; /* Przestrzeń wewnątrz karty */
+  text-align: center; /* Wyśrodkowanie nazwy */
+
+  /* Styl tekstu */
+  font-family: "Press Start 2P", cursive; /* Pasuje do nagłówka */
+  font-size: 10px; /* Mniejsza czcionka, żeby długie nazwy się mieściły */
+  text-transform: capitalize; /* Pierwsza litera duża (bulbasaur -> Bulbasaur) */
+
+  /* Dodatki interaktywne */
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.pokemon-item:hover {
+  transform: scale(1.05); /* Lekkie powiększenie */
+  background-color: #ffffff; /* Rozjaśnienie tła */
+  border-color: #3b4cca; /* Zmiana koloru ramki na "Pokemon Blue" */
+}
