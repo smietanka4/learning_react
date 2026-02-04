@@ -59,3 +59,41 @@ Poniżej znajduje się ściąga pokazująca, w którym pliku i w jakiej funkcji 
   - `public/index.html` (widoki przełączane klasą `.hidden`)
   - `public/app.js` (logika klienta)
   - `public/style.css` (wygląd)
+
+# Jak działa hashowanie w tym projekcie?
+
+W projekcie wykorzystywana jest biblioteka **`bcryptjs`**. Służy ona do bezpiecznego przechowywania haseł, aby nigdy nie były zapisywane w bazie jawnym tekstem.
+
+## 1. Rejestracja (Tworzenie Hasha)
+
+**Gdzie:** `server.js` (endpoint `/api/register`)
+
+```javascript
+const hash = bcrypt.hashSync(password, 8);
+```
+
+### Co się dzieje?
+
+1.  **Solenie (Salting):** Algorytm generuje losowy ciąg znaków zwany "solą" (tutaj wykonuje 8 rund generowania/mieszania).
+2.  **Hashowanie:** Sól jest łączona z hasłem użytkownika, a następnie całość jest wielokrotnie przetwarzana matematycznie.
+3.  **Wynik:** Powstaje jeden długi ciąg znaków (np. `$2a$08$KluczSoli...Hash`), który zawiera w sobie informację o algorytmie, użytą sól oraz właściwy hash. To ten ciąg trafia do bazy danych.
+
+## 2. Logowanie (Porównanie Haseł)
+
+**Gdzie:** `server.js` (endpoint `/api/login`)
+
+```javascript
+bcrypt.compareSync(password, user.password);
+```
+
+### Jak to działa, skoro hasła nie da się "odhashować"?
+
+System **NIE odszyfrowuje** hasła z bazy, ponieważ funkcje skrótu (hash) są jednokierunkowe. Porównanie działa następująco:
+
+1.  System pobiera **hash** zapisany w bazie danych dla danego użytkownika.
+2.  Wyciąga z niego użytą przy rejestracji **sól** (jest zakodowana w początkowych znakach hasha).
+3.  Bierze hasło, które użytkownik wpisał **teraz** w formularzu logowania.
+4.  Hashuje to wpisane hasło **tą samą solą** i tym samym algorytmem.
+5.  Porównuje **nowo wygenerowany hash** z tym **z bazy**.
+
+**Wniosek:** Jeśli wyniki są identyczne, oznacza to, że użytkownik wpisał to samo hasło co przy rejestracji, mimo że serwer nigdy nie poznaje jego jawnej formy.
